@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>登录</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mediaquery.css') }}">
+</head>
+<body>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  <form method="post">
+    <div>
+      <label for="username">用户名</label>
+      <input type="text" id="username" name="username" autofocus>
+    </div>
+    <div>
+      <label for="password">密码</label>
+      <input type="password" id="password" name="password">
+    </div>
+    <div class="button">
+      <button type="submit">登录</button>
+    </div>
+  </form>
+</body>
+</html>

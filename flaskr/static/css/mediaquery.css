@@ -1,0 +1,100 @@
+/* 768px~960px */
+@media screen and (max-width: 960px) {
+  form {
+    width: 400px;
+    margin-left: -217px;
+  }
+
+  label {
+    width: 90px;
+    font: 1em sans-serif;
+  }
+
+  input {
+    width: 300px;
+    font-size: 1em;
+  }
+
+  button {
+    font: 1em sans-serif;
+  }
+
+  .flash {
+    margin: 1em 0;
+    padding: 1em;
+    background: #cae6f6;
+    border: 1px solid #377ba8;
+  }
+}
+
+/* 550px~768px
+768/960=0.8
+*/
+@media screen and (max-width: 768px) {
+  form {
+    width: 320px;  /* 0.8*400=320 */
+    margin-left: -177px;
+  }
+
+  label {
+    width: 72px;   /* 0.8*90=72 */
+    font-size: .8em;
+  }
+
+  input {
+    width: 240px;  /* 0.8*300=240 */
+    font-size: .8em;
+  }
+
+  button {
+    font-size: .8em;
+  }
+}
+
+/* 320PX~550px
+550/960=0.5729
+*/
+@media screen and (max-width: 550px) {
+  form {
+    width: 229.16px;
+    margin-left: -131.58px;  /* 263.16/2=131.58 */
+  }
+
+  label {
+    width: 51.561px;
+    font-size: .5729em;
+  }
+
+  input {
+    width: 171.87px;
+    font-size: .5729em;
+  }
+
+  button {
+    font-size: .5729em;
+  }
+}
+
+/* <=320px
+320/960=0.3333
+*/
+@media screen and (max-width: 320px) {
+  form {
+    width: 133.33px;
+    margin-left: -83.665px;   /* 167.33/2=83.665‬ */
+  }
+
+  label {
+    width: 30px;
+    font-size: .3333em;
+  }
+
+  input {
+    width: 100px;
+    font-size: .3333em;
+  }
+
+  button {
+    font-size: .5729em;
+  }
+}

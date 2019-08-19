@@ -1,0 +1,54 @@
+form {
+  /* 居中表单 */
+  /* margin: 0 auto; */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 400px;
+  margin-left: -217px;  /*(50%) 434/2=217 */
+  margin-top: -84.5px;   /*(50%) 169/2=84.5 */
+  /* 显示表单的轮廓 */
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+}
+
+form div + div {
+  margin-top: 1em;
+}
+
+label {
+  /* 确保所有label大小相同并正确对齐 */
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+}
+
+input {
+  /* 确保所有文本输入框字体相同 */
+  font: 1em sans-serif;
+
+  /* 使所有文本输入框大小相同 */
+  width: 300px;
+  box-sizing: border-box;
+
+  /* 调整文本输入框的边框样式 */
+  border: 1px solid #999;
+}
+
+input:focus {
+  /* 给激活的元素一点高亮效果 */
+  border-color: #000;
+}
+
+.button {
+  /* 把按钮放到和文本输入框一样的位置 */
+  padding-left: 90px; /* 和label的大小一样 */
+}
+
+button {
+  /* 这个外边距的大小与label和文本输入框之间的的间距差不多 */
+  margin-left: .5em;
+
+  font: 1em sans-serif;
+}

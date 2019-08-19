@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>注册</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mediaquery.css') }}">
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+</head>
+<body>
+  <form method="post">
+    <div>
+      <label for="username">用户名</label>
+      <input type="text" id="username" name="username">
+    </div>
+    <div>
+      <label for="email">电子邮件</label>
+      <input type="email" id="email" name="email">
+    </div>
+    <div>
+      <label for="password">密码</label>
+      <input type="password" id="password" name="password">
+    </div>
+    <div>
+      <label for="repassword">确认密码</label>
+      <input type="password" id="repassword" name="repassword" onblur="checkPassword();">
+    </div>
+    <div class="button">
+      <button type="submit">注册</button>
+    </div>
+  </form>
+
+  <script>
+    function checkPassword() {
+      if($("#password").val() != $("#repassword").val()) {
+        alert("两次输入的密码不一致！");
+      }
+    }
+  </script>
+</body>
+</html>
