@@ -1,140 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>章思高</title>
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300|Open+Sans:700" />
-  <link rel="stylesheet" href="css/main.css">
-</head>
-<body>
-  <div class="page">
-    <!-- 开始报头 -->
-    <header class="masthead" role="banner">
-      <p class="logo"><a href="/"><img src="img/logo.png" alt="Le Journal"></a></p>
+{% extends 'blog/base.html' %}
 
-      <ul class="social-sites">
-        <li><a href="http://www.facebook.com">f</a></li>
-        <li><a href="http://www.twitter.com">t</a></li>
-        <li><a href="http://www.flickr.com">n</a></li>
-      </ul>
+{% block header %}
+  <!-- Replace the title at the same time rendering text to h1,great! -->
+  <h1>{% block title %}Manage Blogs{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('blog.create') }}">New</a>
+  {% endif %}
+{% endblock %}
 
-      <nav role="navigation">
-        <ul class="nav-main">
-          <li><a href="/" class="current-page">首页</a></li>
-          <li><a href="/about/">关于</a></li>
-          <li><a href="/contact/">联系</a></li>
-        </ul>
-      </nav>
-    </header>
-    <!-- 结束报头 -->
-
-    <!-- 开始容器 -->
-    <div class="container clearfix">
-      <!-- 开始主体内容 -->
-      <main role="main">
-        <section class="post">
-          <h1>Sunny East Garden at the Getty Villa</h1>
-
-          <img src="img/gettyvilla.jpg" width="600" height="365" alt="" class="post-photo-full">
-
-          <div class="post-blurb">
-            <p>It is hard to believe, but there are about 300 varieties of plants at the East Garden at the Getty, making the
-              experience truly remarkable. This area is one of the most tranquil spaces at the Villa. As I wandered around,
-              enjoying
-              shade provided by sycamore and laurel trees and serenaded by splashing water from two sculptural fountains, I
-              couldn't
-              help but think of ancient Rome and the role of the garden 20 centuries ago. It was a place of peace and &hellip;
-              <a href="#" class="more">Read More</a></p>
-          </div>
-
-          <footer class="footer">
-            <p class="post-footer">Posted in <a href="#">California</a>, <a href="#">Los Angeles</a> and <a href="#">Garden</a>
-              <time datetime="2013-05-17T11:20" class="pubdate">May 17, 2013 at 11:20am</time></p>
-          </footer>
-        </section>
-
-        <section class="post">
-          <h1>The City Named After Queen Victoria</h1>
-
-          <img src="img/victoria.jpg" width="370" height="220" alt="" class="post-photo">
-
-          <div class="post-blurb">
-            <p>An hour and a half aboard a comfortable car ferry is all it takes to transport you from the modern, urban space
-              that is
-              Greater Vancouver to colonial Vancouver Island, seemingly stuck in the 18th century. The main town of Victoria
-              showcases
-              all the picturesque gems the British Empire was so proud of at the height of its spanning expansion.
-              Representative yet
-              inviting Victorian style municipal buildings, a protected harbor and cobblestone streets populated with small
-              shops and
-              artisanal &hellip; <a href="#" class="more">Read More</a></p>
-          </div>
-
-          <footer class="footer">
-            <p class="post-footer">Posted in <a href="#">Island</a>, <a href="#">Canada</a> and <a href="#">Roadtrip</a>
-              <time datetime="2013-05-02T17:45" class="pubdate">May 02, 2013 at 5:45pm</time></p>
-          </footer>
-        </section>
-
-        <nav role="navigation">
-          <ol class="pagination">
-            <li>1</li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">6 &hellip;</a></li>
-            <li><a href="#" class="more">Next</a></li>
-          </ol>
-        </nav>
-      </main>
-      <!-- 结束主体内容 -->
-
-      <!-- 开始附注栏 -->
-      <div class="sidebar">
-        <article class="about">
-          <h2>关于我</h2>
-          <img src="img/about-me.jpg" width="270" height="162" alt="">
-          <p>我叫章思高，热爱技术，探索未知的计算机世界，我的工作是为一家跨境通关公司开发网站，使用的是asp .net core mvc。</p>
-        </article>
-
-        <div class="mod">
-          <h2>My Travels</h2>
-          <img src="img/map.png" width="298" height="145" alt="" class="map">
+{% block content %}
+  {% for blog in blogs %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ blog['title'] }}</h1>
+          <div class="about">by {{ blog['name'] }} on {{ post['created_at'].strftime('%Y-%m-%d') }}</div>
         </div>
-
-        <aside class="mod">
-          <h2>Popular Posts</h2>
-
-          <ul class="links">
-            <li><a href="#" class="more">The City Named After Queen Victoria</a></li>
-            <li><a href="#" class="more">Heaven on Earth? Let's Have Dinner in Paris</a></li>
-            <li><a href="#" class="more">Enjoying Strauss at the Volksoper in Vienna</a></li>
-          </ul>
-        </aside>
-
-        <aside class="mod">
-          <h2>Recently Shared</h2>
-
-          <ul class="links">
-            <li><a href="#" class="more">Heaven on Earth? Let's Have Dinner in Paris</a></li>
-            <li><a href="#" class="more">Experiencing Ramadan in Morocco</a></li>
-            <li><a href="#" class="more">Octoberfest in Munich: The Party for The King's Daughter</a></li>
-          </ul>
-        </aside>
-      </div>
-      <!-- 结束附注栏 -->
-    </div>
-    <!-- 结束容器 -->
-
-    <!-- 开始页脚 -->
-    <footer role="contentinfo" class="footer">
-      <p class="legal"><small>&copy; 2013 Sgal Cheung. All Rights Reserved.</small></p>
-    </footer>
-    <!-- 结束页脚 -->
-  </div>
-  <!-- 结束页面 -->
-</body>
-</html>
+        {% if g.user['id'] == blog['user_id'] %}
+          <a class="action" href="{{ url_for('blog.update', id=blog['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      <p class="body">{{ blog['summary'] }}</p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

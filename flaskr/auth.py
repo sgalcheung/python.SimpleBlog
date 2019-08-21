@@ -32,7 +32,7 @@ def register():
     elif not password:
       error = 'Password is required.'
     elif password != repassword:
-      error = '两次输入的密码不一致！'
+      error = 'Passwords must match.'
     elif db.execute(
       'SELECT id FROM users WHERE name = ?', (username,)
     ).fetchone() is not None:
@@ -75,7 +75,7 @@ def login():
     if error is None:
       session.clear()
       session['user_id'] = user['id']
-      return redirect(url_for('index'))
+      return redirect(url_for('blog.index'))  # jump to management blog home page
 
     flash(error)
 

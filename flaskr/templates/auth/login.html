@@ -14,15 +14,15 @@
   {% endfor %}
   <form method="post">
     <div>
-      <label for="username">用户名</label>
-      <input type="text" id="username" name="username" autofocus>
+      <label for="username">UserName</label>
+      <input type="text" id="username" name="username" value="{{ request.form['username'] }}" autofocus required>
     </div>
     <div>
-      <label for="password">密码</label>
-      <input type="password" id="password" name="password">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
     </div>
     <div class="button">
-      <button type="submit">登录</button>
+      <button type="submit">Log In</button>
     </div>
   </form>
 </body>

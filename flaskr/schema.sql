@@ -19,7 +19,7 @@ CREATE TABLE blogs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     user_name TEXT NOT NULL,
-    user_image TEXT NOT NULL,
+    user_image TEXT NOT NULL,--blog_image
     title TEXT NOT NULL,
     summary TEXT NOT NULL,
     content TEXT NOT NULL,

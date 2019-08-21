@@ -29,10 +29,30 @@ def create_app(test_config=None):
   def hello():
     return 'Hello, World!'
 
+  # Returns a dictionary with a context processor,
+  # and the key in the dictionary is rendered as a variable in the template.
+  import time
+
+  @app.context_processor
+  def get_current_time():
+    def get_time(timeFormat="%Y-%m-%d %H:%M:%S"):
+      return time.strftime(timeFormat)
+    return dict(current_time=get_time)
+
   from . import db
   db.init_app(app)
 
   from . import auth
   app.register_blueprint(auth.bp)
+  from . import blog
+  app.register_blueprint(blog.bp)
+  # app.add_url_rule('/', endpoint='index')
+
+  from flask import render_template
+
+  @app.route('/')
+  @app.route('/index')
+  def index():
+    return render_template('index.html')
 
   return app

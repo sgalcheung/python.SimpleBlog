@@ -10,34 +10,30 @@
   <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
 </head>
 <body>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
   <form method="post">
     <div>
-      <label for="username">用户名</label>
-      <input type="text" id="username" name="username">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" value="{{ request.form['username'] }}" required>
     </div>
     <div>
-      <label for="email">电子邮件</label>
-      <input type="email" id="email" name="email">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" value="{{ request.form['email'] }}" required>
     </div>
     <div>
-      <label for="password">密码</label>
-      <input type="password" id="password" name="password">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
     </div>
     <div>
-      <label for="repassword">确认密码</label>
-      <input type="password" id="repassword" name="repassword" onblur="checkPassword();">
+      <label for="repassword">Repassword</label>
+      <input type="password" id="repassword" name="repassword" required>
     </div>
     <div class="button">
-      <button type="submit">注册</button>
+      <button type="submit">Register</button>
     </div>
   </form>
 
-  <script>
-    function checkPassword() {
-      if($("#password").val() != $("#repassword").val()) {
-        alert("两次输入的密码不一致！");
-      }
-    }
-  </script>
 </body>
 </html>
