@@ -13,7 +13,7 @@ from flaskr.db import get_db
 bp = Blueprint("blog", __name__, url_prefix='/blog')
 
 
-@bp.route('/index', methods=('GET', 'POST'))
+@bp.route('/index', methods=('GET',))
 def index():
   db = get_db()
   blogs = db.execute(
@@ -21,7 +21,7 @@ def index():
     ' FROM blogs b JOIN users u ON b.user_id = u.id'
     ' ORDER BY b.created_at DESC'
   ).fetchall()
-  return render_template("blog/index.html", blogs=blogs)
+  return render_template('blog/index.html', blogs=blogs)
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
@@ -41,7 +41,7 @@ def create():
       db = get_db()
       db.execute(
         'INSERT INTO blogs (user_id, user_name, user_image, title, summary, content, created_at)'
-        " VALUES (?, ?, 'https://cn.bing.com', ?, ?, ?, datetime('now'))",
+        " VALUES (?, ?, 'img/gettyvilla.jpg', ?, ?, ?, datetime('now'))",
         (g.user['id'], g.user['name'], title, summary, content)
       )
       db.commit()
@@ -86,13 +86,15 @@ def update(id):
       db.execute(
         'UPDATE blogs SET title = ?, summary = ?, content = ?'
         ' WHERE id = ?',
-        (title, summary, content)
+        (title, summary, content, id)
       )
       db.commit()
       return redirect(url_for('blog.index'))
 
   return render_template('blog/update.html', blog=blog)
 
+@bp.route('/<int:id>/delete', methods=('POST',))
+@login_required
 def delete(id):
   get_blog(id)
   db = get_db()

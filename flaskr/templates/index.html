@@ -12,7 +12,7 @@
   <div class="page">
     <!-- 开始报头 -->
     <header class="masthead" role="banner">
-      <p class="logo"><a href="/"><img src="img/logo.png" alt="Le Journal"></a></p>
+      <p class="logo"><a href="/"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Le Journal"></a></p>
 
       <ul class="social-sites">
         <li><a href="http://www.facebook.com">f</a></li>
@@ -34,6 +34,24 @@
     <div class="container clearfix">
       <!-- 开始主体内容 -->
       <main role="main">
+        {% for blog in blogs %}
+          <section>
+            <h2><a href="{{ url_for('home.get_blog', id=blog['id']) }}">{{ blog['title'] }}</a></h2>
+
+            <img src="{{ url_for('static', filename=blog['user_image']) }}" width="600" height="365" alt="" class="post-photo-full">
+
+            <div class="post-blurb">
+              <p>{{ blog['summary'] }} &hellip;
+                <a href="{{ url_for('home.get_blog', id=blog['id']) }}" class="more">Read More</a></p>
+            </div>
+
+            <footer class="footer">
+              <p class="post-footer">Posted in <a href="#">California</a>, <a href="#">Los Angeles</a> and <a href="#">Garden</a>
+                <time datetime="{{ blog['created_at'].strftime('%Y-%m-%dT%H:%M:%S') }}" class="pubdate">{{ blog['created_at'].strftime('%b %d %Y %H:%M:%S') }}</time></p>
+            </footer>
+          </section>
+        {% endfor %}
+
         <section class="post">
           <h1>Sunny East Garden at the Getty Villa</h1>
 

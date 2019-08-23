@@ -47,12 +47,15 @@ def create_app(test_config=None):
   from . import blog
   app.register_blueprint(blog.bp)
   # app.add_url_rule('/', endpoint='index')
+  from . import home
+  app.register_blueprint(home.bp)
 
   from flask import render_template
 
-  @app.route('/')
-  @app.route('/index')
-  def index():
-    return render_template('index.html')
+  # @app.route('/')
+  # @app.route('/index')
+  # @app.route('/home')
+  # def index():
+  #   return render_template('index.html')
 
   return app

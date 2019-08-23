@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>章思高</title>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300|Open+Sans:700" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+  <div class="page">
+    <!-- 开始报头 -->
+    <header class="masthead" role="banner">
+      <p class="logo"><a href="/"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Le Journal"></a></p>
+
+      <ul class="social-sites">
+        <li><a href="http://www.facebook.com">f</a></li>
+        <li><a href="http://www.twitter.com">t</a></li>
+        <li><a href="http://www.flickr.com">n</a></li>
+      </ul>
+
+      <nav role="navigation">
+        <ul class="nav-main">
+          <li><a href="/" class="current-page">首页</a></li>
+          <li><a href="/about/">关于</a></li>
+          <li><a href="/contact/">联系</a></li>
+        </ul>
+      </nav>
+    </header>
+    <!-- 结束报头 -->
+
+    <!-- 开始容器 -->
+    <div class="container clearfix">
+      <!-- 开始主体内容 -->
+      <main role="main">
+        <section>
+          <h2>{{ blog['title'] }}</h2>
+
+          <img src="{{ url_for('static', filename=blog['user_image']) }}" width="600" height="365" alt=""
+            class="post-photo-full">
+
+          <div class="post-blurb">
+            <p>{{ blog['content'] }}</p>
+          </div>
+
+          <footer class="footer">
+            <p class="post-footer">Posted in <a href="#">California</a>, <a href="#">Los Angeles</a> and <a href="#">Garden</a>
+              <time datetime="{{ blog['created_at'].strftime('%Y-%m-%dT%H:%M:%S') }}"
+                class="pubdate">{{ blog['created_at'].strftime('%b %d %Y %H:%M:%S') }}</time></p>
+          </footer>
+        </section>
+
+      </main>
+      <!-- 结束主体内容 -->
+
+      <!-- 开始附注栏 -->
+      <div class="sidebar">
+        <article class="about">
+          <h2>关于我</h2>
+          <img src="img/about-me.jpg" width="270" height="162" alt="">
+          <p>我叫章思高，热爱技术，探索未知的计算机世界，我的工作是为一家跨境通关公司开发网站，使用的是asp .net core mvc。</p>
+        </article>
+
+        <div class="mod">
+          <h2>My Travels</h2>
+          <img src="img/map.png" width="298" height="145" alt="" class="map">
+        </div>
+
+        <aside class="mod">
+          <h2>Popular Posts</h2>
+
+          <ul class="links">
+            <li><a href="#" class="more">The City Named After Queen Victoria</a></li>
+            <li><a href="#" class="more">Heaven on Earth? Let's Have Dinner in Paris</a></li>
+            <li><a href="#" class="more">Enjoying Strauss at the Volksoper in Vienna</a></li>
+          </ul>
+        </aside>
+
+        <aside class="mod">
+          <h2>Recently Shared</h2>
+
+          <ul class="links">
+            <li><a href="#" class="more">Heaven on Earth? Let's Have Dinner in Paris</a></li>
+            <li><a href="#" class="more">Experiencing Ramadan in Morocco</a></li>
+            <li><a href="#" class="more">Octoberfest in Munich: The Party for The King's Daughter</a></li>
+          </ul>
+        </aside>
+
+        <aside class="mod">
+          <h2>Function</h2>
+
+          <ul class="links">
+            {% if g.user %}
+            <li><a href="{{ url_for('blog.index') }}"><span>{{ g.user['name'] }}</span></a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+            {% else %}
+            <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+            <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+            {% endif %}
+          </ul>
+        </aside>
+      </div>
+      <!-- 结束附注栏 -->
+    </div>
+    <!-- 结束容器 -->
+
+    <!-- 开始页脚 -->
+    <footer role="contentinfo" class="footer">
+      <p class="legal"><small>&copy; {{ current_time("%Y") }} Sgal Cheung. All Rights Reserved.</small></p>
+    </footer>
+    <!-- 结束页脚 -->
+  </div>
+  <!-- 结束页面 -->
+</body>
+
+</html>
