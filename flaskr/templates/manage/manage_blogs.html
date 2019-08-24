@@ -1,10 +1,19 @@
-{% extends 'blog/base.html' %}
+{% extends 'manage/base.html' %}
 
 {% block header %}
+  <div class="">
+    <div class="">
+      <ul class="">
+        <li class=""><span>blogs</span></li>
+        <li><a href="">comments</a></li>
+        <li><a href="">user</a></li>
+      </ul>
+    </div>
+  </div>
   <!-- Replace the title at the same time rendering text to h1,great! -->
   <h1>{% block title %}Manage Blogs{% endblock %}</h1>
   {% if g.user %}
-    <a class="action" href="{{ url_for('blog.create') }}">New</a>
+    <a class="action" href="{{ url_for('manage.blog_create') }}">New</a>
   {% endif %}
 {% endblock %}
 
@@ -17,7 +26,7 @@
           <div class="about">by {{ blog['name'] }} on {{ blog['created_at'].strftime('%Y-%m-%d') }}</div>
         </div>
         {% if g.user['id'] == blog['user_id'] %}
-          <a class="action" href="{{ url_for('blog.update', id=blog['id']) }}">Edit</a>
+          <a class="action" href="{{ url_for('manage.blog_update', id=blog['id']) }}">Edit</a>
         {% endif %}
       </header>
       <p class="body">{{ blog['summary'] }}</p>

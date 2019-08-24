@@ -10,22 +10,25 @@ from werkzeug.exceptions import abort
 from flaskr.auth import login_required
 from flaskr.db import get_db
 
-bp = Blueprint("blog", __name__, url_prefix='/blog')
+bp = Blueprint("manage", __name__, url_prefix='/manage')
 
-
-@bp.route('/index', methods=('GET',))
+@bp.route('/')
 def index():
+  return redirect(url_for('manage.manage_blogs'))
+
+@bp.route('/blogs', methods=('GET',))
+def manage_blogs():
   db = get_db()
   blogs = db.execute(
     'SELECT b.id, title, summary, b.created_at, user_id, name'
     ' FROM blogs b JOIN users u ON b.user_id = u.id'
     ' ORDER BY b.created_at DESC'
   ).fetchall()
-  return render_template('blog/index.html', blogs=blogs)
+  return render_template('manage/manage_blogs.html', blogs=blogs)
 
-@bp.route('/create', methods=('GET', 'POST'))
+@bp.route('/blog/create', methods=('GET', 'POST'))
 @login_required
-def create():
+def blog_create():
   if request.method == 'POST':
     title = request.form['title']
     summary = request.form['summary']
@@ -45,13 +48,13 @@ def create():
         (g.user['id'], g.user['name'], title, summary, content)
       )
       db.commit()
-      return redirect(url_for('blog.index'))
+      return redirect(url_for('blog.manage'))
 
-  return render_template('blog/create.html')
+  return render_template('manage/blog_create.html')
 
 def get_blog(id, check_author=True):
   blog = get_db().execute(
-    'SELECT b.id, title, summary, content, created_at, user_id, name'
+    'SELECT b.id, title, summary, content, b.created_at, user_id, name'
     ' FROM blogs b JOIN users u ON b.user_id = u.id'
     ' WHERE b.id = ?',
     (id,)
@@ -65,9 +68,9 @@ def get_blog(id, check_author=True):
 
   return blog
 
-@bp.route('/<int:id>/update', methods=('GET', 'POST'))
+@bp.route('/blog/<int:id>/update', methods=('GET', 'POST'))
 @login_required
-def update(id):
+def blog_update(id):
   blog = get_blog(id)
 
   if request.method == 'POST':
@@ -84,20 +87,21 @@ def update(id):
     else:
       db = get_db()
       db.execute(
-        'UPDATE blogs SET title = ?, summary = ?, content = ?'
+        "UPDATE blogs SET title = ?, summary = ?, content = ?, created_at = datetime('now')"
         ' WHERE id = ?',
         (title, summary, content, id)
       )
       db.commit()
-      return redirect(url_for('blog.index'))
+      return redirect(url_for('manage.index'))
 
-  return render_template('blog/update.html', blog=blog)
+  return render_template('manage/blog_update.html', blog=blog)
 
-@bp.route('/<int:id>/delete', methods=('POST',))
+@bp.route('/blog/<int:id>/delete', methods=('POST',))
 @login_required
-def delete(id):
+def blog_delete(id):
   get_blog(id)
   db = get_db()
   db.execute('DELETE FROM blogs WHERE id = ?', (id,))
   db.commit()
-  return redirect(url_for('blog.index'))
+  return redirect(url_for('manage.index'))
+
