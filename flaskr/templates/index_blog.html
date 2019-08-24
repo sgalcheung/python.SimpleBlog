@@ -51,7 +51,68 @@
               <time datetime="{{ blog['created_at'].strftime('%Y-%m-%dT%H:%M:%S') }}"
                 class="pubdate">{{ blog['created_at'].strftime('%b %d %Y %H:%M:%S') }}</time></p>
           </footer>
+
+          <!-- 读取评论列表 -->
+          <div>
+            <h3>相关评论</h3>
+
+            <ul>
+              {% if comments %}
+                {% for comment in comments %}
+                  <li>
+                    <article class="">
+                      <header class="">
+                        <img class="" width="50" height="50" src="{{ comment['user_image'] }}">
+                        <h4 class="">{{ comment['user_name'] }} {% if comment['user_id']==blog['user_id'] %}(作者){% endif %}</h4>
+                        <p class="">{{ comment['created_at'].strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                      </header>
+                      <div class="">
+                        {{ comment['content'] }}
+                      </div>
+                    </article>
+                  </li>
+                {% endfor %}
+              {% else %}
+              <p>还没有人评论...</p>
+              {% endif %}
+            </ul>
+          </div>
+
+          <!-- 添加评论区 -->
+          {% if g.user %}
+            <h3>发表评论</h3>
+
+            <article class="">
+              <header class="">
+                <img class="" width="50" height="50" src="{{ g.user['image'] }}">
+                <h4 class="">{{ g.user['name'] }}</h4>
+              </header>
+              <div class="">
+                <form method="post">
+                  <div class=""></div>
+                  <div class="">
+                    <textarea name="content" required rows="6" placeholder="说点什么吧" style="width:100%;resize:none;"></textarea>
+                  </div>
+                  <div class="">
+                    <button type="submit" class=""><i class=""></i> 发表评论</button>
+                  </div>
+                </form>
+              </div>
+            </article>
+
+            <hr class="">
+          {% else %}
+            <div class="">
+              注册用户登录后才能发表评论，请
+              <a class="" href="{{ url_for('auth.login') }}" rel="nofollow">登录</a>
+              或
+              <a class="" href="{{ url_for('auth.register') }}" rel="nofollow">注册</a>，
+              <a href="/">访问</a> 网站首页。
+            </div>
+          {% endif %}
         </section>
+
+
 
       </main>
       <!-- 结束主体内容 -->

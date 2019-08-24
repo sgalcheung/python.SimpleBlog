@@ -41,7 +41,7 @@ def register():
     if error is None:
       db.execute(
         "INSERT INTO users (email, password, admin, name, image, created_at ) VALUES (?, ?, 0, ?, ?, datetime('now') )",
-        (email, generate_password_hash(password), username,'https://cn.bing.com/images/search?view=detailV2&ccid=AJS9x%2f4s&id=55A2DBDA0ABA4CFD5DFBA0BD833178B35728EBB1&thid=OIP.AJS9x_4sHVt7DABMMJinxAHaHa&mediaurl=http%3a%2f%2fold.bz55.com%2fuploads%2fallimg%2f151207%2f140-15120F92530.jpg&exph=2048&expw=2048&q=%e5%b0%91%e5%a5%b3%e9%80%86%e5%85%89%e5%86%99%e7%9c%9f&simid=608014239721457926&selectedIndex=0')
+        (email, generate_password_hash(password), username,'http://www.gravatar.com/avatar/c788172c2ba2da1eee150b7afb1fe983?d=mm&s=120')
       )
       db.commit()
       return redirect(url_for('auth.login'))
@@ -95,7 +95,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
   session.clear()
-  return redirect(url_for('index'))
+  return redirect('/')
 
 def login_required(view):
   @functools.wraps(view)

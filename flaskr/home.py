@@ -23,12 +23,30 @@ def get_all_blogs():
   ).fetchall()
   return render_template('index.html', blogs=blogs)
 
-@bp.route('/blogs/<int:id>')
+@bp.route('/blogs/<int:id>', methods=('GET','POST'))
 def get_blog(id):
+  if request.method == 'POST':
+    content = request.form['content']
+    db = get_db()
+    db.execute(
+      'INSERT INTO comments (blog_id, user_id, user_name, user_image, content, created_at)'
+      "VALUES (?, ?, ?, ?, ?, datetime('now'))",
+      (id, g.user['id'], g.user['name'], g.user['image'], content)
+    )
+    db.commit()
+    return redirect(url_for('home.get_blog', id=id))
+
   blog = get_db().execute(
-    'SELECT user_name, user_image, title, content, created_at'
+    'SELECT user_id, user_name, user_image, title, content, created_at'
     ' FROM blogs'
     ' WHERE id = ?',
     (id,)
   ).fetchone()
-  return render_template('index_blog.html', blog=blog)
+  comments = get_db().execute(
+    'SELECT id, blog_id, user_id, user_name, user_image, content, created_at'
+    ' FROM comments'
+    ' WHERE blog_id = ?'
+    ' ORDER BY created_at DESC',
+    (id,)
+  ).fetchall()
+  return render_template('index_blog.html', blog=blog, comments=comments)
