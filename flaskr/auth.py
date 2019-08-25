@@ -75,7 +75,7 @@ def login():
     if error is None:
       session.clear()
       session['user_id'] = user['id']
-      return redirect(url_for('blog.index'))  # jump to management blog home page
+      return redirect(url_for('manage.index'))  # jump to management home page
 
     flash(error)
 

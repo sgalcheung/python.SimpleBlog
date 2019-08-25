@@ -105,3 +105,73 @@ def blog_delete(id):
   db.commit()
   return redirect(url_for('manage.index'))
 
+@bp.route('/comments', methods=('GET',))
+@login_required
+def manage_comments():
+  db = get_db()
+  comments=db.execute(
+    'SELECT id, blog_id, user_id, user_name, user_image, content, created_at'
+    ' FROM comments'
+    ' ORDER BY created_at DESC'
+  ).fetchall()
+  return render_template('manage/manage_comments.html', comments=comments)
+
+@bp.route('/comment/<int:id>/delete', methods=('POST',))
+@login_required
+def comment_delete(id):
+  # Verify existence
+  db = get_db()
+  comment = db.execute(
+    'SELECT c.id, content, c.created_at, user_id, name'
+    ' FROM comments c JOIN users u ON c.user_id = u.id'
+    ' WHERE c.id = ?',
+    (id,)
+  ).fetchone()
+
+  if comment is None:
+    abort(404, "Comment id {0} doesn't exist.".format(id))
+
+  db.execute('DELETE FROM comments WHERE id = ?', (id,))
+  db.commit()
+  return redirect(url_for('manage.manage_comments'))
+
+@bp.route('/users', methods=('GET',))
+@login_required
+def manage_users():
+  db = get_db()
+  users = db.execute(
+    'SELECT id, email, password, admin, name, image, created_at'
+    ' FROM users'
+    ' ORDER BY created_at DESC'
+  ).fetchall()
+  return render_template('manage/manage_users.html', users=users)
+
+@bp.route('/user/<int:id>/delete', methods=('POST',))
+def user_delete(id):
+  # Verify existence
+  db = get_db()
+  user = db.execute(
+    'SELECT id, email, password, admin, name, image, created_at'
+    ' FROM users'
+    ' WHERE id = ?',
+    (id,)
+  ).fetchone()
+
+  if user is None:
+    abort(404, "User id {0} doesn't exist.".format(id))
+
+  # delete relevant comments, blogs, finally delete this user
+  db.execute(
+    'DELETE FROM comments WHERE user_id = ?'
+    ,(id,)
+  )
+  db.execute(
+    'DELETE FROM blogs WHERE user_id = ?'
+    ,(id,)
+  )
+  db.execute(
+    'DELETE FROM users WHERE id = ?'
+    ,(id,)
+  )
+  db.commit()
+  return redirect(url_for('manage.manage_users'))

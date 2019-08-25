@@ -1,0 +1,34 @@
+{% extends 'manage/base.html' %}
+
+{% block header %}
+  <div class="">
+    <div class="">
+      <ul class="">
+        <li class=""><a href="{{ url_for('manage.manage_blogs') }}">blogs</a></li>
+        <li><span>comments</span></li>
+        {% if g.user['admin'] == 1 %}
+          <li><a href="{{ url_for('manage.manage_users') }}">users</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <h1>{% block title %}Manage Comments{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for comment in comments %}
+    <form action="{{ url_for('manage.comment_delete', id=comment['id']) }}" method='post'></form>
+      <article class="post">
+        <p class="body">
+          {{ comment['content'] }}
+          {% if g.user['id'] == comment['user_id'] %}
+            <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+          {% endif %}
+        </p>
+      </article>
+    </form>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

@@ -7,6 +7,7 @@ from flask import request
 from flask import url_for
 from werkzeug.exceptions import abort
 
+from flaskr.auth import login_required
 from flaskr.db import get_db
 
 bp = Blueprint("home", __name__,)
@@ -37,7 +38,7 @@ def get_blog(id):
     return redirect(url_for('home.get_blog', id=id))
 
   blog = get_db().execute(
-    'SELECT user_id, user_name, user_image, title, content, created_at'
+    'SELECT id, user_id, user_name, user_image, title, content, created_at'
     ' FROM blogs'
     ' WHERE id = ?',
     (id,)
@@ -50,3 +51,22 @@ def get_blog(id):
     (id,)
   ).fetchall()
   return render_template('index_blog.html', blog=blog, comments=comments)
+
+@bp.route('/blog/<int:blog_id>/comment/<int:comment_id>/delete', methods=('POST',))
+@login_required
+def comment_delete(blog_id, comment_id):
+  # Verify existence
+  db = get_db()
+  comment = db.execute(
+    'SELECT c.id, content, c.created_at, user_id, name'
+    ' FROM comments c JOIN users u ON c.user_id = u.id'
+    ' WHERE c.id = ?',
+    (comment_id,)
+  ).fetchone()
+
+  if comment is None:
+    abort(404, "Comment id {0} doesn't exist.".format(comment_id))
+
+  db.execute('DELETE FROM comments WHERE id = ?', (comment_id,))
+  db.commit()
+  return redirect(url_for('home.get_blog', id=blog_id))

@@ -5,8 +5,10 @@
     <div class="">
       <ul class="">
         <li class=""><span>blogs</span></li>
-        <li><a href="">comments</a></li>
-        <li><a href="">user</a></li>
+        <li><a href="{{ url_for('manage.manage_comments') }}">comments</a></li>
+        {% if g.user['admin'] == 1 %}
+          <li><a href="{{ url_for('manage.manage_users') }}">users</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>

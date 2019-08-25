@@ -59,18 +59,23 @@
             <ul>
               {% if comments %}
                 {% for comment in comments %}
-                  <li>
-                    <article class="">
-                      <header class="">
-                        <img class="" width="50" height="50" src="{{ comment['user_image'] }}">
-                        <h4 class="">{{ comment['user_name'] }} {% if comment['user_id']==blog['user_id'] %}(作者){% endif %}</h4>
-                        <p class="">{{ comment['created_at'].strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                      </header>
-                      <div class="">
-                        {{ comment['content'] }}
-                      </div>
-                    </article>
-                  </li>
+                  <form action="{{ url_for('home.comment_delete', blog_id=blog['id'], comment_id=comment['id']) }}" method='post'>
+                    <li>
+                      <article class="">
+                        <header class="">
+                          <img class="" width="50" height="50" src="{{ comment['user_image'] }}">
+                          <h4 class="">{{ comment['user_name'] }} {% if comment['user_id']==blog['user_id'] %}(作者){% endif %}</h4>
+                          <p class="">{{ comment['created_at'].strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                          {% if g.user['id'] == comment['user_id'] %}
+                            <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+                          {% endif %}
+                        </header>
+                        <div class="">
+                          {{ comment['content'] }}
+                        </div>
+                      </article>
+                    </li>
+                  </form>
                 {% endfor %}
               {% else %}
               <p>还没有人评论...</p>
