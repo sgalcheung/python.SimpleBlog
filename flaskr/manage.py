@@ -48,7 +48,7 @@ def blog_create():
         (g.user['id'], g.user['name'], title, summary, content)
       )
       db.commit()
-      return redirect(url_for('blog.manage'))
+      return redirect(url_for('manage.index'))
 
   return render_template('manage/blog_create.html')
 
@@ -71,7 +71,7 @@ def get_blog(id, check_author=True):
 @bp.route('/blog/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def blog_update(id):
-  blog = get_blog(id)
+  blog = get_blog(id, False)  # Because I have opened up the administrator's authority to operate ordinary users.
 
   if request.method == 'POST':
     title = request.form['title']
@@ -99,7 +99,7 @@ def blog_update(id):
 @bp.route('/blog/<int:id>/delete', methods=('POST',))
 @login_required
 def blog_delete(id):
-  get_blog(id)
+  get_blog(id, False)
   db = get_db()
   db.execute('DELETE FROM blogs WHERE id = ?', (id,))
   db.commit()
@@ -110,9 +110,9 @@ def blog_delete(id):
 def manage_comments():
   db = get_db()
   comments=db.execute(
-    'SELECT id, blog_id, user_id, user_name, user_image, content, created_at'
-    ' FROM comments'
-    ' ORDER BY created_at DESC'
+    'SELECT c.id, blog_id, user_id, user_name, user_image, content, c.created_at'
+    ' FROM comments c JOIN users u ON c.user_id = u.id'
+    ' ORDER BY c.created_at DESC'
   ).fetchall()
   return render_template('manage/manage_comments.html', comments=comments)
 

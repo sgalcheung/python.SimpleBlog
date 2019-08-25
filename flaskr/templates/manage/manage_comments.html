@@ -21,7 +21,7 @@
       <article class="post">
         <p class="body">
           {{ comment['content'] }}
-          {% if g.user['id'] == comment['user_id'] %}
+          {% if g.user['admin'] == 1 or g.user['id'] == comment['user_id'] %}
             <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
           {% endif %}
         </p>
