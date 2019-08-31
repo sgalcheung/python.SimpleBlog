@@ -70,7 +70,6 @@ def create_app(test_config=None):
     return app
 ```
 #### 运行应用程序
-```
 对于Linux和Mac
 ```
 $ export FLASK_APP=flaskr
@@ -117,3 +116,4 @@ $ flask run
 ├── venv/
 ├── setup.py
 └── MANIFEST.in
+```
