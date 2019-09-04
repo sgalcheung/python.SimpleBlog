@@ -136,6 +136,6 @@ $ flask run
     # 开始部署
     heroku create
     heroku addons:add heroku-postgresql:hobby-dev
-    heroku ps:scale web=1
+    heroku ps:scale web=1                           # 默认设置为1，可选
     heroku open
     ```
