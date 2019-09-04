@@ -118,24 +118,3 @@ $ flask run
 ├── setup.py
 └── MANIFEST.in
 ```
-#### 部署到生产环境
-* 项目根节点创建requirements.txt，使用以下命令，会抓取pip安装的所用包，可以只保留需要的依赖
-    ```
-    pip freeze > requirements.txt
-    ```
-* 创建.env文件，添加环境变量
-* 创建Procfile文件，指定启动入口
-* 创建app.json描述项目
-* 使用heroku命令部署
-    ```
-    # 更改，可选
-    git add .
-    git commit -m "Description changes"
-    git push origin master
-    git push heroku master
-    # 开始部署
-    heroku create
-    heroku addons:add heroku-postgresql:hobby-dev
-    heroku ps:scale web=1                           # 默认设置为1，可选
-    heroku open
-    ```
