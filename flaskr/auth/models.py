@@ -10,9 +10,9 @@ class User(db.Model):
   email = db.Column(db.String, unique=True, nullable=False)
   username = db.Column(db.String, unique=True, nullable=False)
   _password = db.Column("password", db.String, nullable=False)
-  admin = db.Column(db.Boolean, nullable=False, server_default=False)
-  image = db.Column(db.String, nullable=False, server_default="http://www.gravatar.com/avatar/c788172c2ba2da1eee150b7afb1fe983?d=mm&s=120")
-  created_at = db.Column(db.DataTime, nullable=False, server_default=db.func.current_timestamp())
+  admin = db.Column(db.Boolean, nullable=False, default=False)
+  image = db.Column(db.String, nullable=False, default="http://www.gravatar.com/avatar/c788172c2ba2da1eee150b7afb1fe983?d=mm&s=120")
+  created_at = db.Column(db.DateTime, nullable=False, server_default=db.func.current_timestamp())
 
   def password(self, value):
     """Store the password as a hash for security."""

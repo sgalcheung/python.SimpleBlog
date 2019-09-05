@@ -7,7 +7,7 @@ from flask import request
 from flask import url_for
 from werkzeug.exceptions import abort
 
-from flaskr.auth import login_required
+from flaskr.auth.views import login_required
 from flaskr import db
 from flaskr.auth.models import User
 from flaskr.manage.models import Blog, Comment
