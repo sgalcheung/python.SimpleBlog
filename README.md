@@ -10,6 +10,8 @@ choco install python
 ```bash
 @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 ```
+#### 添加ORM框架SQLAlchemy
+
 #### 创建一个环境
 创建一个项目文件夹，其中包含一个venv文件
 ```
