@@ -137,5 +137,6 @@ $ flask run
     git push heroku master
     heroku addons:add heroku-postgresql:hobby-dev
     heroku ps:scale web=1                           # 默认设置为1，可选
+    heroku run flask init-db                        # 初始化数据库
     heroku open
     ```
