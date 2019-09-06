@@ -106,8 +106,10 @@ def blog_delete(id):
   so admin can delete too and  "check_author=Flase".
   """
   blog = get_blog(id, False)
-  # comment = get delete blog's comments
+  comments = Comment.query.filter(Comment.blog_id==blog.id).all()
+  [db.session.delete(comment) for comment in comments]
   db.session.delete(blog)
+  db.session.commit()
   return redirect(url_for('manage.index'))
 
 
@@ -174,7 +176,12 @@ def user_delete(id):
   Ensure that the user exists
   """
   user = get_user(id)
-  # delete commit,blog
+  blogs = Blog.query.filter(Blog.author_id==user.id).all()
+  # delete comment=>blog=>user
+  for blog in blogs:
+    comments = Comment.query.filter(Comment.blog_id==blog.id).all()
+    [db.session.delete(comment) for comment in comments]
+  [db.session.delete(blog) for blog in blogs]
   db.session.delete(user)
   db.session.commit()
   return redirect(url_for('manage.manage_users'))
