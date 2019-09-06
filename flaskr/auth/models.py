@@ -14,6 +14,11 @@ class User(db.Model):
   image = db.Column(db.String, nullable=False, default="http://www.gravatar.com/avatar/c788172c2ba2da1eee150b7afb1fe983?d=mm&s=120")
   created_at = db.Column(db.DateTime, nullable=False, server_default=db.func.current_timestamp())
 
+  @hybrid_property
+  def password(self):
+    return self._password
+
+  @password.setter
   def password(self, value):
     """Store the password as a hash for security."""
     self._password = generate_password_hash(value)
