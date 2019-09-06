@@ -130,13 +130,11 @@ $ flask run
 * 创建app.json描述项目
 * 使用heroku命令部署
     ```
-    # 更改，可选
+    heroku create
     git add .
     git commit -m "Description changes"
     git push origin master
     git push heroku master
-    # 开始部署
-    heroku create
     heroku addons:add heroku-postgresql:hobby-dev
     heroku ps:scale web=1                           # 默认设置为1，可选
     heroku open
