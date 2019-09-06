@@ -91,7 +91,7 @@ def login():
     if error is None:
       # store the user id in a new session and return to the index
       session.clear()
-      session['user_id'] = user['id']
+      session['user_id'] = user.id
       return redirect(url_for('manage.index'))  # jump to management home page
 
     flash(error)
