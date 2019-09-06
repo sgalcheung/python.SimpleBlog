@@ -28,12 +28,12 @@ def get_blog(id):
   """Get select blog articles and comment, also add comment."""
   if request.method == 'POST':
     content = request.form['content']
-    db.session.add(Comment(blog_id=id,user_id=g.user[id],content=content))
+    db.session.add(Comment(blog_id=id,user_id=g.user.id,content=content))
     db.session.commit()
     return redirect(url_for('home.get_blog', id=id))
 
   blog = Blog.query.filter_by(id=id).first()
-  comments = Comment.filter(Comment.blog_id==id).all()
+  comments = Comment.query.filter(Comment.blog_id==id).all()
   return render_template('index_blog.html', blog=blog, comments=comments)
 
 @bp.route('/blog/<int:blog_id>/comment/<int:comment_id>/delete', methods=('POST',))

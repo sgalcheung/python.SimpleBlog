@@ -148,7 +148,7 @@
 
           <ul class="links">
             {% if g.user %}
-              <li><a href="{{ url_for('manage.index') }}"><span>{{ g.user['name'] }}</span></a></li>
+              <li><a href="{{ url_for('manage.index') }}"><span>{{ g.user['username'] }}</span></a></li>
               <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
             {% else %}
               <li><a href="{{ url_for('auth.register') }}">Register</a></li>

@@ -63,8 +63,8 @@
                     <li>
                       <article class="">
                         <header class="">
-                          <img class="" width="50" height="50" src="{{ comment['user_image'] }}">
-                          <h4 class="">{{ comment['user_name'] }} {% if comment['user_id']==blog['user_id'] %}(作者){% endif %}</h4>
+                          <img class="" width="50" height="50" src="{{ comment.authoruser.image }}">
+                          <h4 class="">{{ comment.authoruser["username"] }} {% if comment['user_id']==blog['author_id'] %}(作者){% endif %}</h4>
                           <p class="">{{ comment['created_at'].strftime('%Y-%m-%d %H:%M:%S') }}</p>
                           {% if g.user['id'] == comment['user_id'] %}
                             <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
@@ -160,7 +160,7 @@
 
           <ul class="links">
             {% if g.user %}
-            <li><a href="{{ url_for('manage.index') }}"><span>{{ g.user['name'] }}</span></a></li>
+            <li><a href="{{ url_for('manage.index') }}"><span>{{ g.user['username'] }}</span></a></li>
             <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
             {% else %}
             <li><a href="{{ url_for('auth.register') }}">Register</a></li>
