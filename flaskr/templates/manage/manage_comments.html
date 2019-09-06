@@ -17,7 +17,7 @@
 
 {% block content %}
   {% for comment in comments %}
-    <form action="{{ url_for('manage.comment_delete', id=comment['id']) }}" method='post'></form>
+    <form action="{{ url_for('manage.comment_delete', id=comment['id']) }}" method='post'>
       <article class="post">
         <p class="body">
           {{ comment['content'] }}
