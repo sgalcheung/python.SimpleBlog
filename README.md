@@ -133,10 +133,13 @@ $ flask run
     heroku create
     git add .
     git commit -m "Description changes"
-    git push origin master
-    git push heroku master
+    git push origin Flask-SQLAlchemy
+    git push heroku Flask-SQLAlchemy
     heroku addons:add heroku-postgresql:hobby-dev
     heroku ps:scale web=1                           # 默认设置为1，可选
     heroku run flask init-db                        # 初始化数据库
     heroku open
+
+    # heroku必须更新到master，因为部署是总是发布master主分支，同时会识别更改，自动build和release
+    git push heroku Flask-SQLAlchemy:master
     ```
