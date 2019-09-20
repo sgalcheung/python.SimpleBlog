@@ -1,5 +1,5 @@
 import functools
-
+import os
 from flask import Blueprint
 from flask import flash
 from flask import g
@@ -8,9 +8,11 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+from flask import Response
 
 from flaskr import db
 from flaskr.auth.models import User
+from flaskr.utils.code import Code
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -73,12 +75,23 @@ def register():
 
   return render_template('auth/register.html')
 
+@bp.route('/codes', methods=('GET', 'POST'))
+def code():
+  info = Code().create_code()
+  image_file = info["image_file"]
+  code = info["code"]
+  session["code"] = code
+  image_content = image_file.getvalue()
+  print(code)
+  return Response(image_content, mimetype='jpeg')
+
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
   """Log in a registered user by adding the user id to the session."""
   if request.method == 'POST':
     userid = request.form['userid']
     password = request.form['password']
+    vialdcode = request.form['vialdcode']
     error = None
 
     user = User.query.filter_by(username=userid).first() or User.query.filter_by(email=userid).first()
@@ -87,6 +100,8 @@ def login():
       error = 'Incorrect username or email.'
     elif not user.check_password(password):
       error = 'Incorrect password.'
+    elif vialdcode != session["code"]:
+      error = 'Incorrect viald code'
 
     if error is None:
       # store the user id in a new session and return to the index
