@@ -4,8 +4,11 @@ import click
 from flask import Flask
 from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
+from flask_gravatar import Gravatar
 
 db = SQLAlchemy()
+gravatar = Gravatar()
+
 
 def create_app(test_config=None):
   """Create and configure an instance of the Flask application."""
@@ -37,6 +40,9 @@ def create_app(test_config=None):
   # initialized Flask-SQLAlchemy and the init-db command
   db.init_app(app)
   app.cli.add_command(init_db_command)
+
+  # initialized Flask-Gravatar
+  gravatar.init_app(app)
 
   # a simple page that says hello
   @app.route('/hello/')

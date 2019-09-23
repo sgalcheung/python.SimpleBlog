@@ -18,7 +18,7 @@
   <form action="{{ url_for('manage.user_delete', id=user['id']) }}" method='post'>
       <article class="post">
         <p class="body">
-          {{ user['name'] }}-{{ user['email'] }}-
+          {{ user['username'] }}-{{ user['email'] }}-
           {% if g.user['admin'] == user['admin'] %}
             Admin-
           {% endif %}

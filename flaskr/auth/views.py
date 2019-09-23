@@ -13,6 +13,7 @@ from flask import Response
 from flaskr import db
 from flaskr.auth.models import User
 from flaskr.utils.code import Code
+from flaskr import gravatar
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -66,8 +67,10 @@ def register():
       error = f"User {email} is already registered."
 
     if error is None:
+      # getting the user profile image
+      link = gravatar(email, use_ssl=True)
       # the name and email is available, create the user and go to the login page
-      db.session.add(User(username=username,email=email,password=password))
+      db.session.add(User(username=username,email=email,password=password,image=link))
       db.session.commit()
       return redirect(url_for('auth.login'))
 
