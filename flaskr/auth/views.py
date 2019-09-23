@@ -13,6 +13,7 @@ from flask import Response
 from flaskr import db
 from flaskr.auth.models import User
 from flaskr.utils.code import Code
+from flaskr import gravatar
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
