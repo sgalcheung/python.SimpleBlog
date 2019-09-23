@@ -6,13 +6,17 @@ from flask import render_template
 from flask import request
 from flask import url_for
 from werkzeug.exceptions import abort
+from werkzeug.utils import secure_filename
 
 from flaskr import db
 from flaskr.auth.views import login_required
 from flaskr.manage.models import Blog, Comment
 from flaskr.auth.models import User
+import os
+from flask import send_from_directory
 
 bp = Blueprint("manage", __name__, url_prefix='/manage')
+UPLOAD_FOLDER_BLOG = 'flaskr/static/img/blog'
 
 @bp.route('/')
 def index():
@@ -44,6 +48,10 @@ def get_blog(id, check_author=True):
 
   return blog
 
+def allowed_file(filename):
+  ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+  return '.' in filename and \
+    filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @bp.route('/blog/create', methods=('GET', 'POST'))
 @login_required
@@ -52,6 +60,12 @@ def blog_create():
     title = request.form['title']
     summary = request.form['summary']
     content = request.form['content']
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+      filename = secure_filename(file.filename)
+      # ensure the folder exists
+      os.makedirs(UPLOAD_FOLDER_BLOG, exist_ok=True)
+      file.save(os.path.join(UPLOAD_FOLDER_BLOG, filename))
     error = None
 
     if not title:
@@ -60,7 +74,7 @@ def blog_create():
     if error is not None:
       flash(error)
     else:
-      db.session.add(Blog(title=title, summary=summary, content=content, author=g.user))
+      db.session.add(Blog(title=title, summary=summary, content=content, author=g.user, image=file.filename))
       db.session.commit()
       return redirect(url_for('manage.index'))
 
@@ -80,6 +94,13 @@ def blog_update(id):
     title = request.form['title']
     summary = request.form['summary']
     content = request.form['content']
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+      filename = secure_filename(file.filename)
+      file_url = 'img/blog/' + filename
+      # ensure the folder exists
+      os.makedirs(UPLOAD_FOLDER_BLOG, exist_ok=True)
+      file.save(os.path.join(UPLOAD_FOLDER_BLOG, filename))
     error = None
 
     if not title:
@@ -91,6 +112,7 @@ def blog_update(id):
       blog.title = title
       blog.summary = summary
       blog.content = content
+      blog.image = file_url
       db.session.commit()
       return redirect(url_for('manage.index'))
 

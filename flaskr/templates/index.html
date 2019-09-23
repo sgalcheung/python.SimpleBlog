@@ -38,7 +38,9 @@
           <section>
             <h2><a href="{{ url_for('home.get_blog', id=blog['id']) }}">{{ blog['title'] }}</a></h2>
 
-            <img src="{{ url_for('static', filename=blog['user_image']) }}" width="600" height="365" alt="" class="post-photo-full">
+            {% if blog['image'] %}
+              <img src="{{ url_for('static', filename=blog['image']) }}" width="600" height="365" alt="" class="post-photo-full">
+            {% endif %}
 
             <div class="post-blurb">
               <p>{{ blog['summary'] }} &hellip;
