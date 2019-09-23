@@ -43,6 +43,9 @@ def create_app(test_config=None):
   # initialized Flask-Gravatar
   gravatar.init_app(app)
 
+  # limit the size of uploaded files
+  app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
   # a simple page that says hello
   @app.route('/hello/')
   def hello():
