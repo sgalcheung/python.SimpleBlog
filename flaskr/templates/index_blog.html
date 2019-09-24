@@ -93,6 +93,9 @@
                 <h4 class="">{{ g.user['name'] }}</h4>
               </header>
               <div class="">
+                {% for message in get_flashed_messages() %}
+                  <div class="flash">{{ message }}</div>
+                {% endfor %}
                 <form method="post">
                   <div class=""></div>
                   <div class="">

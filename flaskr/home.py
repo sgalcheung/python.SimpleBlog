@@ -27,10 +27,19 @@ def get_all_blogs():
 def get_blog(id):
   """Get select blog articles and comment, also add comment."""
   if request.method == 'POST':
+    error = None
+    mark_left = '<'
+    mark_right = '/>'
     content = request.form['content']
-    db.session.add(Comment(blog_id=id,user_id=g.user.id,content=content))
-    db.session.commit()
-    return redirect(url_for('home.get_blog', id=id))
+    if mark_left in content or mark_right in content:
+      error = "Input containing '<' or '/>' is not allowed."
+
+    if error is None:
+      db.session.add(Comment(blog_id=id,user_id=g.user.id,content=content))
+      db.session.commit()
+      return redirect(url_for('home.get_blog', id=id))
+
+    flash(error)
 
   blog = Blog.query.filter_by(id=id).first()
   comments = Comment.query.filter(Comment.blog_id==id).all()

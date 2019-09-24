@@ -57,16 +57,24 @@ def allowed_file(filename):
 @login_required
 def blog_create():
   if request.method == 'POST':
+    error = None
+    mark_left = '<'
+    mark_right = '/>'
     title = request.form['title']
     summary = request.form['summary']
     content = request.form['content']
+    if (mark_left in title or mark_right in title) or \
+       (mark_left in summary or mark_right in summary) or \
+       (mark_left in content or mark_right in content):
+      error = "Input containing '<' or '/>' is not allowed."
+
     file = request.files['file']
     if file and allowed_file(file.filename):
       filename = secure_filename(file.filename)
       # ensure the folder exists
       os.makedirs(UPLOAD_FOLDER_BLOG, exist_ok=True)
       file.save(os.path.join(UPLOAD_FOLDER_BLOG, filename))
-    error = None
+
 
     if not title:
       error = 'Title is required.'
@@ -91,9 +99,17 @@ def blog_update(id):
   blog = get_blog(id, False)
 
   if request.method == 'POST':
+    error = None
+    mark_left = '<'
+    mark_right = '/>'
     title = request.form['title']
     summary = request.form['summary']
     content = request.form['content']
+    if (mark_left in title or mark_right in title) or \
+       (mark_left in summary or mark_right in summary) or \
+       (mark_left in content or mark_right in content):
+      error = "Input containing '<' or '/>' is not allowed."
+
     file = request.files['file']
     if file and allowed_file(file.filename):
       filename = secure_filename(file.filename)
@@ -101,7 +117,6 @@ def blog_update(id):
       # ensure the folder exists
       os.makedirs(UPLOAD_FOLDER_BLOG, exist_ok=True)
       file.save(os.path.join(UPLOAD_FOLDER_BLOG, filename))
-    error = None
 
     if not title:
       errror = 'Title is required.'
