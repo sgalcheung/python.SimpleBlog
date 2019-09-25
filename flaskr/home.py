@@ -7,8 +7,11 @@ from flask import request
 from flask import url_for
 from werkzeug.exceptions import abort
 
-from flaskr.auth import login_required
-from flaskr.db import get_db
+from flaskr.auth.views import login_required
+from flaskr import db
+from flaskr.auth.models import User
+from flaskr.manage.models import Blog, Comment
+from flaskr.manage.views import get_comment
 
 bp = Blueprint("home", __name__,)
 
@@ -16,57 +19,39 @@ bp = Blueprint("home", __name__,)
 @bp.route('/index', methods=('GET',))
 @bp.route('/home', methods=('GET',))
 def get_all_blogs():
-  db = get_db()
-  blogs = db.execute(
-    'SELECT id, user_name, user_image, title, summary, created_at'
-    ' FROM blogs'
-    ' ORDER BY created_at DESC'
-  ).fetchall()
+  """Show all the blogs, most recent first."""
+  blogs = Blog.query.order_by(Blog.created_at.desc()).all()
   return render_template('index.html', blogs=blogs)
 
 @bp.route('/blogs/<int:id>', methods=('GET','POST'))
 def get_blog(id):
+  """Get select blog articles and comment, also add comment."""
   if request.method == 'POST':
+    error = None
+    mark_left = '<'
+    mark_right = '/>'
     content = request.form['content']
-    db = get_db()
-    db.execute(
-      'INSERT INTO comments (blog_id, user_id, user_name, user_image, content, created_at)'
-      "VALUES (?, ?, ?, ?, ?, datetime('now'))",
-      (id, g.user['id'], g.user['name'], g.user['image'], content)
-    )
-    db.commit()
-    return redirect(url_for('home.get_blog', id=id))
+    if mark_left in content or mark_right in content:
+      error = "Input containing '<' or '/>' is not allowed."
 
-  blog = get_db().execute(
-    'SELECT id, user_id, user_name, user_image, title, content, created_at'
-    ' FROM blogs'
-    ' WHERE id = ?',
-    (id,)
-  ).fetchone()
-  comments = get_db().execute(
-    'SELECT id, blog_id, user_id, user_name, user_image, content, created_at'
-    ' FROM comments'
-    ' WHERE blog_id = ?'
-    ' ORDER BY created_at DESC',
-    (id,)
-  ).fetchall()
+    if error is None:
+      db.session.add(Comment(blog_id=id,user_id=g.user.id,content=content))
+      db.session.commit()
+      return redirect(url_for('home.get_blog', id=id))
+
+    flash(error)
+
+  blog = Blog.query.filter_by(id=id).first()
+  comments = Comment.query.filter(Comment.blog_id==id).all()
   return render_template('index_blog.html', blog=blog, comments=comments)
 
 @bp.route('/blog/<int:blog_id>/comment/<int:comment_id>/delete', methods=('POST',))
 @login_required
 def comment_delete(blog_id, comment_id):
-  # Verify existence
-  db = get_db()
-  comment = db.execute(
-    'SELECT c.id, content, c.created_at, user_id, name'
-    ' FROM comments c JOIN users u ON c.user_id = u.id'
-    ' WHERE c.id = ?',
-    (comment_id,)
-  ).fetchone()
-
-  if comment is None:
-    abort(404, "Comment id {0} doesn't exist.".format(comment_id))
-
-  db.execute('DELETE FROM comments WHERE id = ?', (comment_id,))
-  db.commit()
+  """Delete a comment.
+  Ensure that the comment exists and that the logged in user is the author of the comment.
+  """
+  comment = get_comment(comment_id)
+  db.session.delete(comment)
+  db.session.commit()
   return redirect(url_for('home.get_blog', id=blog_id))

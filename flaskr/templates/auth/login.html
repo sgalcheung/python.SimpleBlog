@@ -14,12 +14,17 @@
   {% endfor %}
   <form method="post">
     <div>
-      <label for="username">UserName</label>
-      <input type="text" id="username" name="username" value="{{ request.form['username'] }}" autofocus required>
+      <label for="userid">username or email</label>
+      <input type="text" id="userid" name="userid" value="{{ request.form['userid'] }}" autofocus required>
     </div>
     <div>
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <label for="vialdcode">viald code</label>
+      <input type="text" id="vialdcode" name="vialdcode" class="vialdcode" required>
+      <img src="/auth/codes" alt="captcha" title="click toggle" onclick="this.src='/auth/codes'">
     </div>
     <div class="button">
       <button type="submit">Log In</button>

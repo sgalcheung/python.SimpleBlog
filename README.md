@@ -10,6 +10,8 @@ choco install python
 ```bash
 @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 ```
+#### 添加ORM框架SQLAlchemy
+
 #### 创建一个环境
 创建一个项目文件夹，其中包含一个venv文件
 ```
@@ -118,3 +120,26 @@ $ flask run
 ├── setup.py
 └── MANIFEST.in
 ```
+#### 部署到生产环境
+* 项目根节点创建requirements.txt，使用以下命令，会抓取pip安装的所用包，可以只保留需要的依赖
+    ```
+    pip freeze > requirements.txt
+    ```
+* 创建.env文件，添加环境变量
+* 创建Procfile文件，指定启动入口
+* 创建app.json描述项目
+* 使用heroku命令部署
+    ```
+    heroku create
+    git add .
+    git commit -m "Description changes"
+    git push origin Flask-SQLAlchemy
+    git push heroku Flask-SQLAlchemy
+    heroku addons:add heroku-postgresql:hobby-dev
+    heroku ps:scale web=1                           # 默认设置为1，可选
+    heroku run flask init-db                        # 初始化数据库
+    heroku open
+
+    # heroku必须更新到master，因为部署是总是发布master主分支，同时会识别更改，自动build和release
+    git push heroku Flask-SQLAlchemy:master
+    ```
