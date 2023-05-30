@@ -4,11 +4,11 @@
 #### 新技能
 认识Flask框架，配置Flask安装环境，官方建议采用虚拟环境来开发和部署你的项目，Windows系统需要先安装python，通过cmd.exe安装
 ```bash
-choco install python
+winget install Python.Python.3.7
 ```
-如果没有安装[Chocolatey](https://chocolatey.org/install#installing-chocolatey)，先执行
+如果不可用先执行
 ```bash
-@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
 ```
 #### 添加ORM框架SQLAlchemy
 
@@ -86,6 +86,13 @@ $ flask run
 > flask init-db           # 运行此项目需要初始化数据库
 > flask run               # 出现异常，使用python -m flask run
 ```
+
+Powershell:
+```
+> $env:FLASK_APP="flaskr"
+> $env:FLASK_ENV="development"
+```
+
 项目结构目录最终类似于如下
 ```
 /home/user/Projects/python.SimpleBlog
