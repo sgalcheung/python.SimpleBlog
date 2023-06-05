@@ -135,25 +135,3 @@ Powershell:
 * 创建.env文件，添加环境变量
 * 创建Procfile文件，指定启动入口
 * 创建app.json描述项目
-* 使用heroku命令部署
-    ```
-    heroku create                                   # 创建heroku应用
-    # 首先合并分支到master上
-    git add .
-    git commit -m "Description changes"
-    git push -u origin Flask-SQLAlchemy             # 将更改提交到分支上
-    git checkout master                             # 切换到master分支
-    git pull origin master                          # 多人开发的话，需要把远程master上的代码pull下来
-    git merge Flask-SQLAlchemy                      # 把Flask-SQLAlchemy分支的代码合并到master上
-    git status
-    git push origin master                          # push到远程master上
-    git push heroku master
-    heroku addons:add heroku-postgresql:hobby-dev
-    heroku ps:scale web=1                           # 默认设置为1，可选
-    heroku run flask init-db                        # 初始化数据库
-    heroku open
-
-    # 更新部署
-    # heroku必须更新到master，因为部署是总是发布master主分支，同时会识别更改，自动build和release
-    # 这里我搞错了，其他分支本来就是要合并到master，所以现在GitHub上就应该合并过去，然后在更新到heroku
-    ```
